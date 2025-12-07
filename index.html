@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The Kada · Vendor Payout Calculator</title>
+  <style>
+    :root {
+      --kada-blue: #1f6fd1;
+      --kada-blue-dark: #0f4b96;
+      --kada-blue-soft: rgba(31, 111, 209, 0.08);
+      --bg: #f3f4f6;
+      --card-bg: #ffffff;
+      --text-main: #0f172a;
+      --text-muted: #6b7280;
+      --danger: #ef4444;
+      --border-soft: #e5e7eb;
+      --radius-xl: 1.2rem;
+      --shadow-soft: 0 18px 40px rgba(15, 23, 42, 0.12);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif;
+    }
+
+    body {
+      background: radial-gradient(circle at top, #e5f0ff 0, #f3f4f6 40%, #eef2ff 100%);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1.25rem 0.9rem;
+      color: var(--text-main);
+    }
+
+    .app {
+      width: 100%;
+      max-width: 430px;
+    }
+
+    .card {
+      background: var(--card-bg);
+      border-radius: 1.7rem;
+      padding: 1.4rem 1.4rem 1.5rem;
+      box-shadow: var(--shadow-soft);
+      border: 1px solid var(--border-soft);
+    }
+
+    .brand-header {
+      display: flex;
+      align-items: center;
+      gap: 0.7rem;
+      margin-bottom: 0.7rem;
+    }
+
+    .brand-logo {
+      width: 40px;
+      height: 40px;
+      border-radius: 999px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: radial-gradient(circle at 25% 10%, #4ea5ff 0, #1f6fd1 55%, #0f4b96 100%);
+    }
+
+    .brand-logo img {
+      width: 26px;
+      height: 26px;
+      object-fit: contain;
+      display: block;
+    }
+
+    .brand-text-main {
+      font-weight: 700;
+      font-size: 1.1rem;
+      letter-spacing: 0.01em;
+    }
+
+    .brand-text-sub {
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: var(--text-muted);
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      padding: 0.25rem 0.65rem;
+      border-radius: 999px;
+      background: var(--kada-blue-soft);
+      color: var(--kada-blue-dark);
+      font-size: 0.7rem;
+      margin-bottom: 0.55rem;
+    }
+
+    .badge-dot {
+      width: 0.42rem;
+      height: 0.42rem;
+      border-radius: 999px;
+      background: var(--kada-blue);
+      box-shadow: 0 0 10px rgba(31, 111, 209, 0.8);
+    }
+
+    h1 {
+      font-size: 1.25rem;
+      margin-bottom: 0.35rem;
+    }
+
+    .subtitle {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    form {
+      margin-top: 1rem;
+    }
+
+    label {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      display: block;
+      margin-bottom: 0.3rem;
+    }
+
+    .input-row {
+      display: flex;
+      gap: 0.45rem;
+      align-items: center;
+      margin-bottom: 0.7rem;
+    }
+
+    .currency-prefix {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      padding: 0.6rem 0.7rem;
+      border-radius: 999px;
+      border: 1px solid var(--border-soft);
+      background: #f9fafb;
+    }
+
+    input[type="number"] {
+      flex: 1;
+      border-radius: 999px;
+      border: 1px solid var(--border-soft);
+      padding: 0.6rem 0.85rem;
+      background: #f9fafb;
+      font-size: 0.92rem;
+      outline: none;
+      transition: border 0.15s, box-shadow 0.15s, background 0.15s;
+    }
+
+    input[type="number"]::placeholder {
+      color: #9ca3af;
+    }
+
+    input[type="number"]:focus {
+      border-color: rgba(31, 111, 209, 0.75);
+      box-shadow: 0 0 0 1px rgba(31, 111, 209, 0.25);
+      background: #ffffff;
+    }
+
+    .btn-primary {
+      width: 100%;
+      border: none;
+      border-radius: 999px;
+      padding: 0.7rem 1rem;
+      margin-top: 0.3rem;
+      font-size: 0.92rem;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+      background: linear-gradient(135deg, #4ea5ff 0, #1f6fd1 45%, #0f4b96 100%);
+      color: #f9fafb;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.4rem;
+      box-shadow: 0 13px 26px rgba(15, 76, 150, 0.45);
+      transition: transform 0.08s ease, box-shadow 0.12s ease, filter 0.08s;
+    }
+
+    .btn-primary span.icon {
+      font-size: 1rem;
+    }
+
+    .btn-primary:active {
+      transform: translateY(1px) scale(0.99);
+      box-shadow: 0 9px 18px rgba(15, 76, 150, 0.5);
+      filter: brightness(0.97);
+    }
+
+    .error {
+      margin-top: 0.45rem;
+      font-size: 0.78rem;
+      color: var(--danger);
+      min-height: 1em;
+    }
+
+    .results {
+      margin-top: 1rem;
+      padding: 0.9rem 0.95rem;
+      border-radius: 1.1rem;
+      background: var(--kada-blue-soft);
+      border: 1px solid rgba(31, 111, 209, 0.35);
+    }
+
+    .results-title {
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--text-muted);
+      margin-bottom: 0.45rem;
+    }
+
+    .results-grid {
+      display: grid;
+      grid-template-columns: 1.3fr 1fr;
+      gap: 0.45rem 0.6rem;
+      font-size: 0.82rem;
+    }
+
+    .results-label {
+      color: var(--text-muted);
+    }
+
+    .results-value {
+      text-align: right;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .results-value.highlight {
+      color: var(--kada-blue-dark);
+      font-weight: 600;
+    }
+
+    .results-value.badge {
+      display: inline-flex;
+      justify-content: flex-end;
+      align-items: center;
+      font-size: 0.78rem;
+      padding: 0.08rem 0.55rem;
+      border-radius: 999px;
+      background: #e0edff;
+      color: #1f4f9e;
+      border: 1px solid rgba(31, 111, 209, 0.5);
+    }
+
+    .hint {
+      margin-top: 0.55rem;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+
+    @media (min-width: 480px) {
+      .card {
+        padding: 1.6rem 1.7rem 1.7rem;
+      }
+      h1 {
+        font-size: 1.35rem;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      * {
+        transition-duration: 0.01ms !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <div class="card">
+      <div class="brand-header">
+        <div class="brand-logo">
+          <!-- Replace logo.png with your Kada logo path -->
+          <img src="logo.png" alt="The Kada logo" />
+        </div>
+        <div>
+          <div class="brand-text-main">The Kada · Vendor Portal</div>
+          <div class="brand-text-sub">Your everyday online store</div>
+        </div>
+      </div>
+
+      <div class="badge">
+        <span class="badge-dot"></span>
+        <span>10% platform commission · Vendor always gets full amount</span>
+      </div>
+
+      <h1>Vendor Payout Calculator</h1>
+      <p class="subtitle">
+        Enter the amount a vendor should receive. We add 10% commission on top for the customer.
+      </p>
+
+      <form id="priceForm">
+        <label for="vendorPrice">Amount vendor should receive</label>
+        <div class="input-row">
+          <div class="currency-prefix">₹</div>
+          <input
+            type="number"
+            id="vendorPrice"
+            placeholder="e.g. 500"
+            step="0.01"
+            min="0"
+            inputmode="decimal"
+            required
+          />
+        </div>
+
+        <button type="submit" class="btn-primary">
+          <span class="icon">⚡</span>
+          <span>Calculate final customer price</span>
+        </button>
+
+        <div class="error" id="errorMsg"></div>
+      </form>
+
+      <section class="results" id="resultsSection" style="display:none;">
+        <div class="results-title">Pricing breakdown</div>
+        <div class="results-grid">
+          <div class="results-label">Vendor will receive</div>
+          <div class="results-value highlight" id="vendorReceives">₹0.00</div>
+
+          <div class="results-label">The Kada commission (10%)</div>
+          <div class="results-value badge" id="platformCommission">
+            ₹0.00
+          </div>
+
+          <div class="results-label">Customer pays</div>
+          <div class="results-value" id="customerPays">₹0.00</div>
+        </div>
+
+        <p class="hint">
+          Formula: <strong>Customer pays = Vendor amount ÷ 0.9</strong>.  
+          Commission is 10% of customer price; remaining 90% goes to the vendor.
+        </p>
+      </section>
+    </div>
+  </div>
+
+  <script>
+    const form = document.getElementById("priceForm");
+    const vendorPriceInput = document.getElementById("vendorPrice");
+    const errorMsg = document.getElementById("errorMsg");
+    const resultsSection = document.getElementById("resultsSection");
+    const vendorReceivesEl = document.getElementById("vendorReceives");
+    const platformCommissionEl = document.getElementById("platformCommission");
+    const customerPaysEl = document.getElementById("customerPays");
+
+    const COMMISSION_RATE = 0.10; // 10%
+
+    function formatCurrency(value) {
+      if (isNaN(value)) return "₹0.00";
+      return "₹" + value.toFixed(2);
+    }
+
+    form.addEventListener("submit", function (event) {
+      event.preventDefault();
+      errorMsg.textContent = "";
+
+      const rawVendorPrice = vendorPriceInput.value.trim();
+      const vendorPrice = parseFloat(rawVendorPrice);
+
+      if (!rawVendorPrice || isNaN(vendorPrice) || vendorPrice <= 0) {
+        errorMsg.textContent = "Enter a valid amount greater than 0.";
+        resultsSection.style.display = "none";
+        return;
+      }
+
+      const customerPays = vendorPrice / (1 - COMMISSION_RATE);
+      const commission = customerPays * COMMISSION_RATE;
+      const vendorReceives = customerPays - commission; // ≈ vendorPrice
+
+      vendorReceivesEl.textContent = formatCurrency(vendorReceives);
+      platformCommissionEl.textContent = formatCurrency(commission);
+      customerPaysEl.textContent = formatCurrency(customerPays);
+
+      resultsSection.style.display = "block";
+    });
+  </script>
+</body>
+</html>
