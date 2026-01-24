@@ -23,17 +23,12 @@
       --shadow: 0 18px 40px rgba(15, 23, 42, 0.12);
     }
 
-    /* full screen */
-    html,
-    body {
+    html, body {
       height: 100%;
       margin: 0;
-      padding: 0;
       background: radial-gradient(circle at top, #e5f0ff 0, #f3f4f6 40%, #eef2ff 100%);
       font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif;
-      -webkit-user-select: none;
       user-select: none;
-      overscroll-behavior: none;
     }
 
     body {
@@ -56,7 +51,6 @@
       border: 1px solid var(--border);
     }
 
-    /* Branding */
     .brand-header {
       display: flex;
       align-items: center;
@@ -78,13 +72,11 @@
       width: 28px;
       height: 28px;
       object-fit: contain;
-      display: block;
     }
 
     .brand-text-main {
       font-weight: 700;
       font-size: 1.15rem;
-      letter-spacing: 0.01em;
     }
 
     .brand-text-sub {
@@ -111,19 +103,17 @@
       height: 0.42rem;
       border-radius: 50%;
       background: var(--kada-blue);
-      box-shadow: 0 0 10px rgba(31, 111, 209, 0.8);
     }
 
     h1 {
       font-size: 1.3rem;
       margin-bottom: 0.3rem;
-      color: var(--text);
     }
 
     .subtitle {
       font-size: 0.83rem;
       color: var(--mute);
-      margin-bottom: 0.4rem;
+      margin-bottom: 0.6rem;
     }
 
     label {
@@ -146,10 +136,9 @@
       border-radius: 999px;
       border: 1px solid var(--border);
       font-size: 0.9rem;
-      color: #555;
     }
 
-    input[type="number"] {
+    input, select {
       flex: 1;
       padding: 0.65rem 0.9rem;
       border-radius: 999px;
@@ -159,16 +148,11 @@
       outline: none;
     }
 
-    input[type="number"]::placeholder {
-      color: #9ca3af;
-    }
-
-    input[type="number"]:focus {
+    input:focus, select:focus {
       border-color: var(--kada-blue);
       background: #ffffff;
     }
 
-    /* button */
     .btn-primary {
       width: 100%;
       padding: 0.8rem;
@@ -180,14 +164,6 @@
       font-weight: 600;
       cursor: pointer;
       box-shadow: 0 13px 26px rgba(15, 76, 150, 0.45);
-      display: inline-flex;
-      justify-content: center;
-      align-items: center;
-      gap: 0.35rem;
-    }
-
-    .btn-primary:active {
-      transform: scale(0.98);
     }
 
     .error {
@@ -197,16 +173,15 @@
       height: 0.9rem;
     }
 
-    /* results */
     .results {
       margin-top: 0.9rem;
       padding: 0.9rem;
       background: var(--kada-blue-soft);
       border-radius: 1.2rem;
       border: 1px solid rgba(31, 111, 209, 0.3);
+      display: none;
     }
 
-    /* highlighted block */
     .results-main {
       text-align: center;
       margin-bottom: 0.9rem;
@@ -215,31 +190,13 @@
     .big-title {
       font-size: 0.78rem;
       text-transform: uppercase;
-      letter-spacing: 0.08em;
       color: #1f4b96b0;
     }
 
     .big-value {
-      display: block;
       font-size: 2.1rem;
       font-weight: 800;
       color: #0f4b96;
-      margin: 0.15rem 0 0.55rem;
-    }
-
-    .copy-btn {
-      background: #1f6fd1;
-      color: #ffffff;
-      border: none;
-      padding: 0.45rem 1.2rem;
-      border-radius: 0.9rem;
-      font-size: 0.85rem;
-      cursor: pointer;
-      box-shadow: 0 4px 12px rgba(31, 111, 209, 0.35);
-    }
-
-    .copy-btn:active {
-      transform: scale(0.96);
     }
 
     .results-grid {
@@ -249,169 +206,135 @@
       gap: 0.4rem 0.5rem;
     }
 
-    .results-value {
-      text-align: right;
-      color: var(--text);
-    }
-
     .results-label {
       color: var(--mute);
     }
 
-    /* toast */
-    #toast {
-      position: fixed;
-      bottom: 14%;
-      left: 50%;
-      transform: translateX(-50%) scale(0.9);
-      background: #1f6fd1;
-      color: #ffffff;
-      padding: 0.55rem 1.2rem;
-      border-radius: 0.8rem;
-      font-size: 0.8rem;
-      opacity: 0;
-      pointer-events: none;
-      transition: 0.25s ease;
-      z-index: 50;
-    }
-
-    #toast.show {
-      opacity: 1;
-      transform: translateX(-50%) scale(1);
-    }
-
-    @media (min-width: 480px) {
-      .card {
-        padding: 1.8rem;
-      }
-      h1 {
-        font-size: 1.35rem;
-      }
+    .results-value {
+      text-align: right;
     }
   </style>
 </head>
 
 <body>
-  <div class="app">
-    <div class="card">
-      <div class="brand-header">
-        <div class="brand-logo">
-          <!-- put your kada logo as logo.png -->
-          <img src="logo.png" alt="The Kada logo" />
-        </div>
-        <div>
-          <div class="brand-text-main">The Kada · Vendor Portal</div>
-          <div class="brand-text-sub">Your Everyday Online Store</div>
-        </div>
+<div class="app">
+  <div class="card">
+
+    <div class="brand-header">
+      <div class="brand-logo">
+        <img src="logo.png" alt="The Kada logo">
       </div>
-
-      <div class="badge">
-        <span class="badge-dot"></span>
-        10% platform commission · vendor gets full amount
+      <div>
+        <div class="brand-text-main">The Kada · Vendor Portal</div>
+        <div class="brand-text-sub">Your Everyday Online Store</div>
       </div>
-
-      <h1>Item Price Calculator</h1>
-      <p class="subtitle">
-        Enter the amount the vendor should receive. We add our 10% fee on top for the customer.
-      </p>
-
-      <form id="priceForm">
-        <label for="vendorPrice">Vendor price (final amount vendor receives)</label>
-        <div class="input-row">
-          <span class="currency-prefix">₹</span>
-          <input
-            id="vendorPrice"
-            type="number"
-            placeholder="500"
-            min="0"
-            step="0.01"
-            required
-          />
-        </div>
-
-        <button type="submit" class="btn-primary">
-          <span>⚡</span>
-          <span>Calculate</span>
-        </button>
-
-        <div class="error" id="err"></div>
-      </form>
-
-      <div class="results" id="res" style="display: none;">
-        <div class="results-main">
-          <span class="big-title">Customer pays</span>
-          <span class="big-value" id="r_cp">₹0.00</span>
-          <button class="copy-btn" id="copyBtn">Copy</button>
-        </div>
-
-        <div class="results-grid">
-          <span class="results-label">Vendor receives</span>
-          <span class="results-value" id="r_v">₹0.00</span>
-
-          <span class="results-label">The Kada commission (10%)</span>
-          <span class="results-value" id="r_c">₹0.00</span>
-        </div>
-      </div>
-
-      <div id="toast">Copied</div>
     </div>
+
+    <div class="badge">
+      <span class="badge-dot"></span>
+      <span id="badgeValue">10%</span> platform commission · vendor gets full amount
+    </div>
+
+    <h1>Item Price Calculator</h1>
+    <p class="subtitle" id="subtitleText">
+      Enter the amount the vendor should receive. We add our 10% fee on top.
+    </p>
+
+    <form id="priceForm">
+
+      <label>Platform commission</label>
+      <div class="input-row">
+        <select id="commission">
+          <option value="10">10%</option>
+          <option value="11">11%</option>
+          <option value="12">12%</option>
+          <option value="13">13%</option>
+          <option value="14">14%</option>
+          <option value="15">15%</option>
+        </select>
+      </div>
+
+      <label>Vendor price (final amount vendor receives)</label>
+      <div class="input-row">
+        <span class="currency-prefix">₹</span>
+        <input id="vendorPrice" type="number" placeholder="500" min="0" step="0.01" required>
+      </div>
+
+      <button class="btn-primary" type="submit">Calculate</button>
+      <div class="error" id="err"></div>
+    </form>
+
+    <div class="results" id="res">
+      <div class="results-main">
+        <span class="big-title">Customer pays</span>
+        <div class="big-value" id="r_cp">₹0.00</div>
+      </div>
+
+      <div class="results-grid">
+        <span class="results-label">Vendor receives</span>
+        <span class="results-value" id="r_v">₹0.00</span>
+
+        <span class="results-label" id="commissionLabel">The Kada commission (10%)</span>
+        <span class="results-value" id="r_c">₹0.00</span>
+      </div>
+    </div>
+
   </div>
+</div>
 
-  <script>
-    const form = document.getElementById("priceForm");
-    const vp = document.getElementById("vendorPrice");
-    const res = document.getElementById("res");
-    const v = document.getElementById("r_v");
-    const c = document.getElementById("r_c");
-    const cp = document.getElementById("r_cp");
-    const err = document.getElementById("err");
-    const toast = document.getElementById("toast");
-    const copyBtn = document.getElementById("copyBtn");
+<script>
+  const form = document.getElementById("priceForm");
+  const vp = document.getElementById("vendorPrice");
+  const commissionSelect = document.getElementById("commission");
+  const res = document.getElementById("res");
+  const v = document.getElementById("r_v");
+  const c = document.getElementById("r_c");
+  const cp = document.getElementById("r_cp");
+  const err = document.getElementById("err");
+  const badgeValue = document.getElementById("badgeValue");
+  const subtitleText = document.getElementById("subtitleText");
+  const commissionLabel = document.getElementById("commissionLabel");
 
-    const COMMISSION = 0.10; // 10%
+  function format(n) {
+    return "₹" + n.toFixed(2);
+  }
 
-    function format(currency) {
-      return "₹" + currency.toFixed(2);
+  function getCommissionRate() {
+    return parseFloat(commissionSelect.value) / 100;
+  }
+
+  function syncText() {
+    const pct = commissionSelect.value;
+    badgeValue.textContent = pct + "%";
+    subtitleText.textContent =
+      `Enter the amount the vendor should receive. We add our ${pct}% fee on top.`;
+    commissionLabel.textContent = `The Kada commission (${pct}%)`;
+  }
+
+  commissionSelect.addEventListener("change", syncText);
+  syncText();
+
+  form.addEventListener("submit", e => {
+    e.preventDefault();
+
+    const vendorAmount = parseFloat(vp.value);
+    if (!vendorAmount || vendorAmount <= 0) {
+      err.textContent = "Enter a valid amount greater than 0.";
+      res.style.display = "none";
+      return;
     }
 
-    form.addEventListener("submit", (e) => {
-      e.preventDefault();
+    const rate = getCommissionRate();
+    const customerPays = vendorAmount / (1 - rate);
+    const commission = customerPays * rate;
 
-      const val = parseFloat(vp.value);
+    v.textContent = format(vendorAmount);
+    c.textContent = format(commission);
+    cp.textContent = format(customerPays);
 
-      if (!val || val <= 0) {
-        err.textContent = "Enter a valid amount greater than 0.";
-        res.style.display = "none";
-        return;
-      }
-
-      const customerPays = val / (1 - COMMISSION); // P / 0.9
-      const commission = customerPays * COMMISSION;
-      const vendorReceives = customerPays - commission;
-
-      v.textContent = format(vendorReceives);
-      c.textContent = format(commission);
-      cp.textContent = format(customerPays);
-
-      res.style.display = "block";
-      err.textContent = "";
-    });
-
-    if (copyBtn) {
-      copyBtn.addEventListener("click", () => {
-        const text = cp.textContent.trim(); // includes ₹
-        if (navigator.clipboard && navigator.clipboard.writeText) {
-          navigator.clipboard.writeText(text).then(() => {
-            toast.classList.add("show");
-            setTimeout(() => toast.classList.remove("show"), 900);
-          });
-        } else {
-          // fallback: do nothing silently on very old browsers
-          toast.classList.add("show");
-          setTimeout(() => toast.classList.remove("show"), 900);
-        }
-      });
-    }
-  </script>
+    res.style.display = "block";
+    err.textContent = "";
+  });
+</script>
 </body>
 </html>
